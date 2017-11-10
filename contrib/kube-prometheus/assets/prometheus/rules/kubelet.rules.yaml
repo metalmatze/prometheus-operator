@@ -22,7 +22,7 @@ groups:
         state).'
       summary: Many Kubernetes nodes are Not Ready
   - alert: K8SKubeletDown
-    expr: count(up{job="kubelet"} == 0) / count(up{job="kubelet"}) > 0.03
+    expr: count(up{job="kubelet"} == 0) / count(up{job="kubelet"}) > 0.3
     for: 1h
     labels:
       severity: warning
