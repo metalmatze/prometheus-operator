@@ -1,5 +1,5 @@
 local prometheusNamespaceRoleBinding = import "prometheus-namespace-role-binding.libsonnet";
 
 {
-    new(namespace):: prometheusNamespaceRoleBinding.new(namespace, namespace, "prometheus-k8s-config", "prometheus-k8s")
+    new(namespace, name="k8s"):: prometheusNamespaceRoleBinding.new(namespace, namespace, "prometheus-"+name+"-config", "prometheus-"+name),
 }

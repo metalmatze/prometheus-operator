@@ -3,7 +3,7 @@ local role = k.rbac.v1.role;
 local policyRule = role.rulesType;
 
 {
-    new(namespace)::
+    new(namespace, name = "k8s")::
         local coreRule = policyRule.new() +
           policyRule.withApiGroups([""]) +
           policyRule.withResources([
@@ -15,7 +15,7 @@ local policyRule = role.rulesType;
           policyRule.withVerbs(["get", "list", "watch"]);
 
         role.new() +
-          role.mixin.metadata.withName("prometheus-k8s") +
+          role.mixin.metadata.withName("prometheus-"+name) +
           role.mixin.metadata.withNamespace(namespace) +
           role.withRules(coreRule)
 }

@@ -8,25 +8,25 @@ local resources = resourceRequirements.new() +
   resourceRequirements.withRequests({memory: "400Mi"});
 
 {
-    new(namespace)::
+    new(namespace, name="k8s", replicas = 2)::
         {
           apiVersion: "monitoring.coreos.com/v1",
           kind: "Prometheus",
           metadata: {
-            name: "k8s",
+            name: name,
             namespace: namespace,
             labels: {
-              prometheus: "k8s",
+              prometheus: name,
             },
           },
           spec: {
-            replicas: 2,
+            replicas: replicas,
             version: "v2.2.1",
-            serviceAccountName: "prometheus-k8s",
+            serviceAccountName: "prometheus-" + name,
             serviceMonitorSelector: selector.withMatchExpressions({key: "k8s-app", operator: "Exists"}),
             ruleSelector: selector.withMatchLabels({
               role: "alert-rules",
-              prometheus: "k8s",
+              prometheus: name,
             }),
             resources: resources,
             alerting: {

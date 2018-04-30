@@ -5,8 +5,8 @@ local servicePort = k.core.v1.service.mixin.spec.portsType;
 local prometheusPort = servicePort.newNamed("web", 9090, "web");
 
 {
-    new(namespace)::
-        service.new("prometheus-k8s", {app: "prometheus", prometheus: "k8s"}, prometheusPort) +
+    new(namespace, name = "k8s")::
+        service.new("prometheus-"+name, {app: "prometheus", prometheus: name}, prometheusPort) +
           service.mixin.metadata.withNamespace(namespace) +
-          service.mixin.metadata.withLabels({prometheus: "k8s"})
+          service.mixin.metadata.withLabels({prometheus: name})
 }

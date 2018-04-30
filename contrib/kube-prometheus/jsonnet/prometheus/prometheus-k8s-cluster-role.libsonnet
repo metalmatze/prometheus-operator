@@ -14,8 +14,8 @@ local metricsRule = policyRule.new() +
 local rules = [nodeMetricsRule, metricsRule];
 
 {
-    new()::
+    new(name = "k8s")::
         clusterRole.new() +
-          clusterRole.mixin.metadata.withName("prometheus-k8s") +
+          clusterRole.mixin.metadata.withName("prometheus-" + name) +
           clusterRole.withRules(rules)
 }

@@ -1,5 +1,5 @@
 local prometheusNamespaceRole = import "prometheus-namespace-role.libsonnet";
 
 {
-    new():: prometheusNamespaceRole.new("default")
+    new(name = "k8s"):: prometheusNamespaceRole.new("default", name)
 }

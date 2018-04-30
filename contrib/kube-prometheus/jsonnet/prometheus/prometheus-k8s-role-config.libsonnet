@@ -10,9 +10,9 @@ local configmapRule = policyRule.new() +
   policyRule.withVerbs(["get"]);
 
 {
-    new(namespace)::
+    new(namespace, name = "k8s")::
         role.new() +
-          role.mixin.metadata.withName("prometheus-k8s-config") +
+          role.mixin.metadata.withName("prometheus-"+name+"-config") +
           role.mixin.metadata.withNamespace(namespace) +
           role.withRules(configmapRule),
 }

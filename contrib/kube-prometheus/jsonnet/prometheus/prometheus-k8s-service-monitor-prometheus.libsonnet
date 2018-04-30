@@ -1,5 +1,5 @@
 {
-    new(namespace)::
+    new(namespace, name)::
         {
             "apiVersion": "monitoring.coreos.com/v1",
             "kind": "ServiceMonitor",
@@ -13,7 +13,7 @@
             "spec": {
                 "selector": {
                     "matchLabels": {
-                        "prometheus": "k8s"
+                        "prometheus": name,
                     }
                 },
                 "namespaceSelector": {
