@@ -32,6 +32,7 @@ import (
 	"github.com/coreos/prometheus-operator/pkg/api"
 	monitoringv1 "github.com/coreos/prometheus-operator/pkg/apis/monitoring/v1"
 	prometheuscontroller "github.com/coreos/prometheus-operator/pkg/prometheus"
+	thanoscontroller "github.com/coreos/prometheus-operator/pkg/thanos"
 	"github.com/coreos/prometheus-operator/pkg/version"
 
 	"github.com/go-kit/kit/log"
@@ -215,6 +216,12 @@ func Main() int {
 		return 1
 	}
 
+	to, err := thanoscontroller.New(cfg, log.With(logger, "component", "thanosoperator"))
+	if err != nil {
+		fmt.Fprint(os.Stderr, "instantiating prometheus controller failed: ", err)
+		return 1
+	}
+
 	mux := http.NewServeMux()
 	web, err := api.New(cfg, log.With(logger, "component", "api"))
 	if err != nil {
@@ -301,6 +308,7 @@ func Main() int {
 
 	wg.Go(func() error { return po.Run(ctx.Done()) })
 	wg.Go(func() error { return ao.Run(ctx.Done()) })
+	wg.Go(func() error { return to.Run(ctx.Done()) })
 
 	srv := &http.Server{Handler: mux}
 	wg.Go(serve(srv, l, logger))
